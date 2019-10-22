@@ -9,6 +9,9 @@ import store from './store'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+
+import '@/style/index.less'
+
 Vue.use(ElementUI)
 
 // 设置当前项目的模式,为非生产模式
