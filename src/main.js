@@ -12,6 +12,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 import '@/style/index.less'
 
+import axios from 'axios'
+Vue.prototype.$axios = axios
+axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
+
 Vue.use(ElementUI)
 
 // 设置当前项目的模式,为非生产模式
