@@ -10,17 +10,21 @@
           <el-input v-model="form.mobile" placeholder="请输入手机号码"></el-input>
         </el-form-item>
         <el-form-item prop="code">
+          <!-- <div class="myitem">
+            <el-input v-model="form.code" placeholder="请输入验证码"></el-input>
+            <el-button class="itembtn">获取验证码</el-button>
+          </div> -->
           <el-row>
             <el-col :span="14">
               <el-input v-model="form.code" placeholder="请输入验证码"></el-input>
             </el-col>
-            <el-col :span="8">
-              <el-button>获取验证码</el-button>
+            <el-col :span="8" :offset="2">
+              <el-button class="itembtn">获取验证码</el-button>
             </el-col>
           </el-row>
         </el-form-item>
         <el-form-item>
-          <el-button size="medium" type="primary" class="login-btn" @click="submitForm('ruleForm')">登录</el-button>
+          <el-button size="medium" type="primary" class="login-btn" @click="submitForm('ruleForm')" :loading="loginLoading">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -34,9 +38,9 @@ export default {
   // 管理表单元素的父容器,ref 中dom 操作dom元素 v-model
   data () {
     return {
+      loginLoading: false,
       form: {
         mobile: '13911111111',
-
         code: '246810'
       },
       rules: {
@@ -67,6 +71,7 @@ export default {
       })
     },
     submitData () {
+      this.loginLoading = true
       axios({
         url: 'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
         method: 'POST',
@@ -76,10 +81,12 @@ export default {
         // data.data.token
         console.log(res)
         this.$message.success('登录成功')
+        this.loginLoading = false
         this.$router.push('/')
       }).catch(err => {
         console.log('登录失败', err.message)
         this.$message.error('手机号验证码失败')
+        this.loginLoading = false
       })
       // 发送post请求
       // this.$axios.post('/authorizations', { mobile: this.mobile, code: this.code })
@@ -116,6 +123,13 @@ export default {
       img {
         width: 150px;
         margin-bottom: 20px;
+      }
+    }
+    .myitem {
+      display: flex;
+      justify-content: space-between;
+      .itembtn {
+        margin-left: 20px;
       }
     }
   }
