@@ -23,6 +23,9 @@
             </el-col>
           </el-row>
         </el-form-item>
+        <el-form-item prop="read">
+          <el-checkbox v-model="form.read">我已阅读并同意<a href="#">用户协议</a> 和<a href="#">隐私条款</a></el-checkbox>
+        </el-form-item>
         <el-form-item>
           <el-button size="medium" type="primary" class="login-btn" @click="submitForm('ruleForm')" :loading="loginLoading">登录</el-button>
         </el-form-item>
@@ -33,15 +36,18 @@
 
 <script>
 import axios from 'axios'
+
 export default {
   // 管理el-form
   // 管理表单元素的父容器,ref 中dom 操作dom元素 v-model
   data () {
     return {
       loginLoading: false,
+      checked: false,
       form: {
         mobile: '13911111111',
-        code: '246810'
+        code: '246810',
+        read: false
       },
       rules: {
         mobile: [
@@ -52,6 +58,9 @@ export default {
         code: [
           { required: true, message: '请输入验证码', trigger: 'blur' },
           { min: 6, max: 6, message: '长度6位字符', trigger: 'blur' }
+        ],
+        read: [
+          { pattern: /true/, message: '请选中', trigger: 'change' }
         ]
       }
     }
