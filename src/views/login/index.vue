@@ -19,7 +19,7 @@
               <el-input v-model="form.code" placeholder="请输入验证码"></el-input>
             </el-col>
             <el-col :span="8" :offset="2">
-              <el-button class="itembtn">获取验证码</el-button>
+              <el-button class="itembtn" @click="getCode('ruleForm')" :disabled="!!codeInterval">{{ codeInterval ? `${lastTimes}秒重试`:'获取验证码'}}</el-button>
             </el-col>
           </el-row>
         </el-form-item>
@@ -42,8 +42,11 @@ export default {
   // 管理表单元素的父容器,ref 中dom 操作dom元素 v-model
   data () {
     return {
+      codeLoading: false,
       loginLoading: false,
       checked: false,
+      codeInterval: null,
+      lastTimes: 5,
       form: {
         mobile: '13911111111',
         code: '246810',
@@ -66,6 +69,30 @@ export default {
     }
   },
   methods: {
+    getCode (ruleForm) {
+      this.$refs[ruleForm].validateField('mobile', errMsg => {
+        console.log('errMsg', errMsg)
+        if (errMsg) {
+          console.log('验证失败,失败信息为:', errMsg)
+          return
+        }
+        this.codeInterval = setInterval(() => {
+          if (this.lastTimes === 0) {
+            this.codeLoading = false
+            clearInterval(this.codeInterval)
+            clearTimeout(this.codeInterval)
+            console.log('codeInterval', this.codeInterval)
+            this.codeInterval = null
+            this.lastTimes = 5
+          } else {
+            // 展示倒计时,
+            this.codeLoading = true
+            this.lastTimes--
+            console.log('codeInterval', this.codeInterval)
+          }
+        }, 1000)
+      })
+    },
     submitForm (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
