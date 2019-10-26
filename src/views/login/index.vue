@@ -50,7 +50,7 @@ export default {
       form: {
         mobile: '13911111111',
         code: '246810',
-        read: false
+        read: true
       },
       rules: {
         mobile: [
@@ -116,6 +116,7 @@ export default {
         // data中又token,需要我们会用上,一个就是token,一个就是refresh token 啦啦啦
         // data.data.token
         console.log(res)
+        localStorage.setItem('userInfo', JSON.stringify(res.data.data))
         this.$message.success('登录成功')
         this.loginLoading = false
         this.$router.push('/')
